@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         Dropdown Pokémon Rarity Filter (Preloaded)
+// @name         Dropdown Pokémon Rarity Filter (Legendary, Mythical, Final Evolutions, Rare) [Radio Button with Reset and Show All Entries for Specific Page]
 // @namespace    https://moonani.com/
-// @version      1.7
-// @description  Adds a dropdown checklist to filter Pokémon table by rarity type and bring selected types to the top, preloaded without user interaction
-// @author       https://github.com/brodante/
+// @version      2.5
+// @description  Adds a dropdown to filter Pokémon table by Legendary, Mythical, Final Evolutions, Rare Pokémon, with radio buttons, reset option, and sets "Show All Entries" by default for https://moonani.com/PokeList/index.php.
+// @author       https://github.com/brodante
 // @match        https://moonani.com/*
 // @grant        none
 // ==/UserScript==
@@ -11,20 +11,34 @@
 (function () {
     'use strict';
 
-    // Pokémon Rarity Categories
-    const rarityCategories = {
-        'Legendary': ['Mewtwo', 'Lugia', 'Rayquaza', 'Kyogre', 'Groudon', 'Zapdos', 'Articuno', 'Moltres'],
-        'Mythical': ['Mew', 'Celebi', 'Jirachi', 'Darkrai', 'Deoxys', 'Arceus'],
-        'Shiny': ['✨'], // Sparkle emoji for shiny Pokémon
-        'Rare': ['Lapras', 'Dratini', 'Chansey'],
-        'Pseudo-Legendary': ['Dragonite', 'Tyranitar', 'Metagross', 'Garchomp'],
-        'Regional': ['Tauros', 'Mr. Mime', 'Farfetch\'d', 'Kangaskhan'],
-        'Event': ['Pikachu (hat)', 'Delibird (Holiday)', 'Costume']
-    };
+    // Check if we are on the specific page
+    const isPokeListPage = window.location.href === 'https://moonani.com/PokeList/index.php';
+
+    // Pokémon Categories (Using Pokedex numbers)
+    const legendaryPokemons = [
+        144, 145, 146, 150, 151, 243, 244, 245, 249, 250, 377, 378, 379, 380, 381, 382, 383, 384,
+        385, 386, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492, 493, 644, 645, 646,
+        716, 717, 718, 785, 786, 787, 788, 791, 792, 798, 888, 889, 890, 891, 892, 894, 895, 896, 897, 898
+    ];
+
+    const mythicalPokemons = [
+        151, 251, 385, 386, 490, 492, 493, 494, 647, 648, 649, 719, 720, 721, 801, 802, 807, 808, 809
+    ];
+
+    const finalEvolutions = [
+        6, 9, 3, 65, 68, 76, 59, 248, 249, 250, 254, 257, 260, 282, 308, 286, 373, 376, 445, 392, 395, 389,
+        497, 500, 503, 658, 655, 652, 724, 727, 730, 811, 815, 818
+    ];
+
+    // Adding Rare Pokémon, like Larvitar and others
+    const rarePokemons = [
+        132, 133, 134, 135, 136, 137, 238, 339, 422, 423, 532, 533, 634, 635, 649, 667, 672, 677, 707, 708,
+        720, 721, 722, 734, 735, 744, 745, 751, 752, 787
+    ];
 
     let originalOrder = []; // To store the original table row order
 
-    function createDropdownChecklist() {
+    function createDropdown() {
         const table = document.querySelector('#customers');
         if (!table) return;
 
@@ -39,32 +53,35 @@
 
         // Dropdown label
         const dropdownLabel = document.createElement('div');
-        dropdownLabel.textContent = 'Filter Pokémon by Rarity:';
+        dropdownLabel.textContent = 'Filter Pokémon by Category:';
         dropdownLabel.style.fontSize = '16px';
         dropdownLabel.style.fontWeight = 'bold';
         dropdownLabel.style.marginBottom = '8px';
         dropdownContainer.appendChild(dropdownLabel);
 
-        // Dropdown checklist
+        // Dropdown menu
         const dropdownMenu = document.createElement('div');
         dropdownMenu.style.display = 'grid';
         dropdownMenu.style.gridTemplateColumns = 'repeat(auto-fit, minmax(120px, 1fr))';
         dropdownMenu.style.gap = '10px';
 
-        Object.keys(rarityCategories).forEach(category => {
+        const categories = ['Legendary Pokémon', 'Mythical Pokémon', 'Final Evolutions', 'Rare Pokémon', 'Reset'];
+
+        categories.forEach(category => {
             const label = document.createElement('label');
             label.style.display = 'flex';
             label.style.alignItems = 'center';
             label.style.cursor = 'pointer';
             label.style.padding = '5px';
 
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = category;
-            checkbox.style.marginRight = '8px';
-            checkbox.addEventListener('change', applyFilters);
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'pokemon-filter';
+            radio.value = category;
+            radio.style.marginRight = '8px';
+            radio.addEventListener('change', applyFilters);
 
-            label.appendChild(checkbox);
+            label.appendChild(radio);
             label.appendChild(document.createTextNode(category));
             dropdownMenu.appendChild(label);
         });
@@ -76,8 +93,9 @@
     }
 
     function applyFilters() {
-        const selectedCategories = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
-            .map(checkbox => checkbox.value);
+        const selectedCategory = document.querySelector('input[name="pokemon-filter"]:checked')?.value;
+
+        if (!selectedCategory) return;
 
         const tableBody = document.querySelector('#customers tbody');
         if (!tableBody) return;
@@ -89,17 +107,20 @@
             originalOrder = rows.slice();
         }
 
-        // Separate matching and non-matching rows
+        // Separate matching and non-matching rows based on selected category
         const matchingRows = [];
         const nonMatchingRows = [];
 
         rows.forEach(row => {
-            const nameCell = row.querySelector('td:nth-child(2)');
-            if (nameCell) {
-                const pokemonName = nameCell.textContent.trim();
-                const isMatch = selectedCategories.some(category =>
-                    rarityCategories[category].some(keyword => pokemonName.includes(keyword))
-                );
+            const numberCell = row.querySelector('td:nth-child(3)'); // Target the 3rd column for Pokedex number (Number)
+            if (numberCell) {
+                const pokemonNumber = parseInt(numberCell.textContent.trim(), 10);
+                const isMatch = selectedCategory === 'Legendary Pokémon' ? legendaryPokemons.includes(pokemonNumber) :
+                                 selectedCategory === 'Mythical Pokémon' ? mythicalPokemons.includes(pokemonNumber) :
+                                 selectedCategory === 'Final Evolutions' ? finalEvolutions.includes(pokemonNumber) :
+                                 selectedCategory === 'Rare Pokémon' ? rarePokemons.includes(pokemonNumber) :
+                                 selectedCategory === 'Reset' ? true : false;
+
                 if (isMatch) {
                     matchingRows.push(row);
                 } else {
@@ -129,18 +150,27 @@
     function waitForTableAndAddDropdown() {
         const table = document.querySelector('#customers');
         if (table) {
-            createDropdownChecklist(); // If table is already present
+            createDropdown(); // If table is already present
         } else {
             // If table is not present, observe the document for changes
             const observer = new MutationObserver(() => {
                 const table = document.querySelector('#customers');
                 if (table) {
-                    createDropdownChecklist();
+                    createDropdown();
                     observer.disconnect(); // Stop observing once the table is found
                 }
             });
 
             observer.observe(document.body, { childList: true, subtree: true });
+        }
+
+        // Automatically select "All" in the "Show Entries" dropdown if on the specific page
+        if (isPokeListPage) {
+            const showEntriesDropdown = document.querySelector('select[name="customers_length"]'); // Correct selector for the "Show Entries" dropdown
+            if (showEntriesDropdown) {
+                showEntriesDropdown.value = '-1'; // Set the dropdown value to "All" (value="-1")
+                showEntriesDropdown.dispatchEvent(new Event('change')); // Trigger change event to apply the selection
+            }
         }
     }
 
