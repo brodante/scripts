@@ -1,25 +1,19 @@
 [
-    // Gen 1
     { "name": "Venusaur", "id": 3 },
     { "name": "Charizard", "id": 6 },
     { "name": "Blastoise", "id": 9 },
-    // Gen 2
     { "name": "Meganium", "id": 154 },
     { "name": "Typhlosion", "id": 157 },
     { "name": "Feraligatr", "id": 160 },
-    // Gen 3
     { "name": "Sceptile", "id": 254 },
     { "name": "Blaziken", "id": 257 },
     { "name": "Swampert", "id": 260 },
-    // Gen 4
     { "name": "Torterra", "id": 389 },
     { "name": "Infernape", "id": 392 },
     { "name": "Empoleon", "id": 395 },
-    // Gen 5
     { "name": "Serperior", "id": 497 },
     { "name": "Emboar", "id": 500 },
     { "name": "Samurott", "id": 503 },
-    // Gen 6
     { "name": "Chesnaught", "id": 652 },
     { "name": "Delphox", "id": 655 },
     { "name": "Greninja", "id": 658 },
@@ -32,7 +26,6 @@
     { "name": "Diancie", "id": 719 },
     { "name": "Hoopa", "id": 720 },
     { "name": "Volcanion", "id": 721 },
-    // Gen 7
     { "name": "Decidueye", "id": 724 },
     { "name": "Incineroar", "id": 727 },
     { "name": "Primarina", "id": 730 },
@@ -64,7 +57,6 @@
     { "name": "Zeraora", "id": 807 },
     { "name": "Meltan", "id": 808 },
     { "name": "Melmetal", "id": 809 },
-    // Gen 8
     { "name": "Rillaboom", "id": 812 },
     { "name": "Cinderace", "id": 815 },
     { "name": "Inteleon", "id": 818 },
@@ -82,7 +74,7 @@
     { "name": "Glastrier", "id": 896 },
     { "name": "Spectrier", "id": 897 },
     { "name": "Calyrex", "id": 898 },
-    // Legends: Arceus
+    { "name": "Arceus", "id": 493 },
     { "name": "Wyrdeer", "id": 899 },
     { "name": "Kleavor", "id": 900 },
     { "name": "Ursaluna", "id": 901 },
