@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Tracker Settings</title>
+    <style>
+        body {
+            width: 250px;
+            padding: 10px;
+        }
+
+        label,
+        select,
+        input {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #pokemonList {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .pokemon-item {
+            margin: 5px 0;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="cooldown">Select Cooldown Period:</label>
+    <select id="cooldown">
+        <option value="5">5 minutes</option>
+        <option value="10">10 minutes</option>
+        <option value="15" selected>15 minutes (Default)</option>
+        <option value="30">30 minutes</option>
+        <option value="60">1 hour</option>
+        <option value="120">2 hours</option>
+    </select>
+
+    <label for="search">Search Pokémon:</label>
+    <input type="text" id="search" placeholder="Search Pokémon..." />
+
+    <div id="pokemonList">
+        <!-- Pokémon checkboxes will be dynamically populated here -->
+    </div>
+
+    <div>
+        <strong>Selected Pokémon:</strong>
+        <ul id="selectedPokemons"></ul>
+    </div>
+
+    <button id="saveButton">Save</button>
+    <button id="resetButton">Reset Selection</button>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
