@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Anime Plan to Watch Button with Viewer and Delete
 // @namespace    http://tampermonkey.net/
-// @version      1.5
+// @version      1.6
 // @description  Adds a "Plan to Watch" button and a "View Bookmarks" button for anime pages on hianime.to and animepahe.ru, with the ability to delete bookmarks and dynamic button behavior.
 // @author       github.com/brodante
 // @match        https://hianime.to/*
@@ -108,7 +108,14 @@
 	// Extract anime title from document.title
 	function getAnimeTitle() {
 		const fullTitle = document.title || 'Untitled';
-		// Extract the anime title before "English Sub/Dub" or similar text
+		const hostname = window.location.hostname;
+
+		if (hostname.includes('hianime.to')) {
+			// Extract title for hianime.to: Remove "Watch ", " English Sub/Dub online Free on HiAnime.to"
+			return fullTitle.replace(/^Watch\s+/, '').replace(/\s+English Sub\/Dub.*$/i, '').trim();
+		}
+
+		// Default behavior for other sites
 		return fullTitle.replace(/[:\-].*$/i, '').trim();
 	}
 
