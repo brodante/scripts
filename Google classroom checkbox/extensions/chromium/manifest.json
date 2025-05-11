@@ -3,13 +3,23 @@
 	"name": "Google Classroom Checkboxes",
 	"version": "1.0",
 	"description": "Adds checkboxes to assignments in the Google Classroom stream.",
-	"permissions": ["scripting", "activeTab"],
+	"permissions": ["scripting", "tabs"],
 	"host_permissions": [
-		"https://classroom.google.com/*"
+		"*://classroom.google.com/*"
 	],
+	"action": {
+		"default_title": "Google Classroom Checkboxes",
+		"default_popup": "popup.html",
+		"default_icon": {
+			"128": "icon.png"
+		}
+	},
+	"background": {
+		"service_worker": "background.js"
+	},
 	"content_scripts": [
 		{
-			"matches": ["https://classroom.google.com/*"],
+			"matches": ["*://classroom.google.com/*"],
 			"js": ["script.js"],
 			"run_at": "document_idle"
 		}

@@ -11,6 +11,13 @@
 			"run_at": "document_idle"
 		}
 	],
+	"browser_action": {
+		"default_title": "Google Classroom Checkboxes",
+		"default_popup": "popup.html",
+		"default_icon": {
+			"128": "icon.png"
+		}
+	},
 	"icons": {
 		"128": "icon.png"
 	}
