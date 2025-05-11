@@ -1,1 +1,1 @@
-# browser-scripts
+# browser-scripts & extensions
