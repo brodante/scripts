@@ -68,5 +68,5 @@ This project is released under the MIT License. See `LICENSE` for details.
 
 ## Author
 
-Developed by [Your Name or Alias].  
+Developed by Dante.  
 Inspired by practical classroom needs for personal task tracking.
