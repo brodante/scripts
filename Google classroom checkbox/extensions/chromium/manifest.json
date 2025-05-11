@@ -1,0 +1,20 @@
+{
+	"manifest_version": 3,
+	"name": "Google Classroom Checkboxes",
+	"version": "1.0",
+	"description": "Adds checkboxes to assignments in the Google Classroom stream.",
+	"permissions": ["scripting", "activeTab"],
+	"host_permissions": [
+		"https://classroom.google.com/*"
+	],
+	"content_scripts": [
+		{
+			"matches": ["https://classroom.google.com/*"],
+			"js": ["script.js"],
+			"run_at": "document_idle"
+		}
+	],
+	"icons": {
+		"128": "icon.png"
+	}
+}
