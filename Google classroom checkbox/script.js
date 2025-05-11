@@ -28,6 +28,7 @@
             container.style.alignItems = 'flex-start';
             container.style.gap = '10px';
             container.style.marginBottom = '16px';
+            container.style.width = '100%'; // ⭐ New line ⭐
 
             // Create checkbox
             const checkbox = document.createElement('input');
@@ -80,14 +81,22 @@
     const style = document.createElement('style');
     style.textContent = `
         .${CHECKBOX_CLASS} {
-            transform: scale(1.4);
-            accent-color: #1a73e8;
-        }
-        .${CONTAINER_CLASS}:has(.${CHECKBOX_CLASS}:checked) div.qhnNic {
-            opacity: 0.6;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
+        transform: scale(1.4);
+        accent-color: #1a73e8;
+        flex-shrink: 0; /* Prevents checkbox from shrinking */
+    }
+    .${CONTAINER_CLASS} {
+        width: 100%; /* Ensures container spans full width */
+    }
+    .${CONTAINER_CLASS} > div.qhnNic.LBlAUc {
+        flex-grow: 1; /* Makes stream item expand to fill space */
+        min-width: 0; /* Fixes flex overflow issues */
+    }
+    .${CONTAINER_CLASS}:has(.${CHECKBOX_CLASS}:checked) div.qhnNic {
+        opacity: 0.6;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
     `;
     document.head.appendChild(style);
 })();
