@@ -19,7 +19,7 @@
         const streamItems = document.querySelectorAll('div.qhnNic.LBlAUc:not(.processed)');
 
         streamItems.forEach(item => {
-            if (item.previousElementSibling?.classList?.contains(CONTAINER_CLASS)) return;
+            //if (item.previousElementSibling?.classList?.contains(CONTAINER_CLASS)) return;
 
             // Create container for checkbox + stream item
             const container = document.createElement('div');
