@@ -1,5 +1,7 @@
 # Google Classroom Checkboxes Extension
 
+<img alt="Working screenshot" src="./google classroom checkboxes.png" />
+
 A lightweight browser extension that adds checkboxes beside posts in the Google Classroom stream. This allows students to visually track completed assignments and announcements for improved task management.
 
 -------------------------------------------------------------------------------
