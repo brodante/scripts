@@ -16,7 +16,8 @@
     const CONTAINER_CLASS = 'checkbox-container-gc';
 
     function initializeCheckboxes() {
-        const streamItems = document.querySelectorAll('div.qhnNic.LBlAUc:not(.processed)');
+            // Look for parent elements with stable structure
+            const streamItems = document.querySelectorAll('[role="main"] div[class*="qhnNic"]:not(.processed)');
 
         streamItems.forEach(item => {
             //if (item.previousElementSibling?.classList?.contains(CONTAINER_CLASS)) return;
