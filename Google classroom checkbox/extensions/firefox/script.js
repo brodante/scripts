@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Classroom Checklist (External Checkboxes)
 // @namespace    http://tampermonkey.net/
-// @version      1.7
+// @version      1.7.2
 // @description  Add persistent checkboxes outside clickable stream items
 // @author       github.com/brodante
 // @match        https://classroom.google.com/*
